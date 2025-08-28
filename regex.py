@@ -17,7 +17,7 @@ tot_matches = 0
 while regex != "done":
     for line in lines:
         list_of_matches = re.findall(regex, line)
-        if list_of_matches:
+        if len(list_of_matches) > 0:
             print("\n" + line)
             for match in list_of_matches:
                 print("\tmatch: " + str(match))
