@@ -13,8 +13,8 @@ with open(CORPUS, encoding="utf-8") as f:
     lines = [ l.strip() for l in f.readlines() ]
 
 regex = input("Enter a regex (or 'done'): ")
-tot_matches = 0
 while regex != "done":
+    tot_matches = 0
     for line in lines:
         list_of_matches = re.findall(regex, line)
         if len(list_of_matches) > 0:
