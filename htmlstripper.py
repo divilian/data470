@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''
 Simple HTML stripper to get rid of tags (and optionally, embedded contents).
 
