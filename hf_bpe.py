@@ -9,13 +9,13 @@ from tokenizers import ByteLevelBPETokenizer
 from pprint import pprint
 
 CORPUS = "bpe_corpus.txt"
-N_MERGES = 20
+N_MERGES = 16
 
 tokenizer = ByteLevelBPETokenizer()
 
 tokenizer.train(
-    [CORPUS],                 # list of files to train on
-    vocab_size=256+N_MERGES,  # approximate; depends on initial alphabet
+    [CORPUS],                  # list of files to train on
+    vocab_size=256+3+N_MERGES, # approximate; depends on initial alphabet
 )
 
 print("The vocab is:")
