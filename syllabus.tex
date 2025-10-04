@@ -1,0 +1,430 @@
+% Fall 2025 NLP
+
+\documentclass[12pt]{article}
+\setlength{\parindent}{0pt}
+\setlength{\baselineskip}{1.5pt}
+\setlength{\parskip}{6pt}
+
+\pagestyle{plain} 
+\addtolength{\textwidth}{.8in}
+%\addtolength{\hoffset}{-.4in}
+%\addtolength{\voffset}{-1.0in}
+
+\usepackage{multicol}    % For multiple columns.
+\usepackage{paralist}
+\usepackage{footnote}
+\makesavenoteenv{tabular}
+\makesavenoteenv{table}
+\makesavenoteenv{center}
+\usepackage{enumitem}
+\usepackage{amsmath}     % For dfrac.
+\usepackage[hyperfootnotes=false]{hyperref}    % For URLs and hyperlinks.
+\usepackage{enumerate}   % For custom enumeration annotations.
+\usepackage{xcolor}       % For colors.
+\usepackage{graphicx}    % For figures.
+\usepackage{geometry}    % For figures.
+\usepackage[normalem]{ulem}    % For strikeouts.
+
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\freakingtilde}{\raisebox{0.5ex}{\texttildelow}}
+
+   
+\usepackage{color, colortbl}
+\definecolor{Gray}{gray}{0.9}
+
+\begin{document}
+
+\begin{center}
+\begin{Large}
+\textbf{DATA 470D3 --- Natural Language Processing} \\
+\end{Large}
+\vspace{.10in}
+\begin{small}
+Professor: Stephen Davies\\
+Fall semester 2025\\
+\vspace{.05in}
+Class: TR 3:30pm in Farmer 054\\
+\vspace{.05in}
+Final exam: Thursday, Dec 11th, 3:30--6pm\\
+\vspace{.10in}
+\end{small}
+\input{../office}
+
+\vspace{.10in}
+
+\textbf{\url{http://stephendavies.org/nlp}}
+
+\end{center}
+
+Much of the data we work with in Data Science can be considered
+\textbf{structured} data. It's rigidly unambiguous, and conforms wholly to some
+``schema'' that defines the various parts it contains and what they mean. Most
+structured data is pretty easy to work with, and that's because its authors
+made it so. After all, the main point of collecting information in (say) a
+tabular format is so that it can be consulted and queried easily.
+
+In stark contrast to this is \textbf{unstructured data}, which is any
+electronic material that does \textit{not} conform to a schema. Images and
+sound files are in this category, as are videos, but the most common is
+\textbf{text} expressed in a \textbf{natural language} like Spanish, Chinese,
+or English. Some experts estimate that over 80\% of the data used by any
+organization consists of unstructured text. What a treasure trove, if we can
+make use of it!
+
+The field of NLP, and this class, will be focused on extracting meaning from
+text despite its lack of structure. We'll learn the linguistic concepts and the
+statistical tools necessary to approach this maddeningly-inconsistent domain,
+and write programs that can derive insight from something as formal as a
+journal article or as informal as a tweet.
+
+As even your grandparents know, NLP applications have positively exploded in
+reach and popularity over the last several years, including the debut of
+ChatGPT to the public in November 2022. I consider this quite possibly the most
+important technology of our lifetime -- perhaps ever -- and breaking it down
+to first principles will be a highlight of this semester. Without being too
+egocentric, let me suggest there's a decent chance that this will be the most
+important college course you ever take.
+
+\section*{Course Objectives}
+
+\begin{itemize}
+\small
+
+\item To survey the field of Natural Language Processing (NLP), so that you
+know what tasks it can currently accomplish and what is still on the horizon.
+
+\item To experiment with pre-neural NLP algorithms, in order to appreciate
+their capabilities and limitations.
+
+\item To examine in detail a modern neural architecture and illuminate how it
+achieves its magic.
+
+\item To give you the opportunity to write real programs running on real text
+data sets, and to see what kinds of practical issues are involved.
+
+\item To confront some of the major ethical concerns that NLP involves,
+including privacy and consent; bias and fairness; transparency and
+accountability; and intellectual property and ownership.
+
+\end{itemize}
+
+\section*{Student Learning Outcomes}
+
+After completing this course, students will be able to...
+
+\begin{itemize}
+
+\item ...identify the different tasks associated with the field of Natural
+Language Processing (NLP), and to explain their purposes, assumptions,
+promises, and limits.
+
+\item ...create custom NLP models in PyTorch for small corpora, and evaluate
+their effectiveness.
+
+\item ...obtain (\textit{e.g.}, from HuggingFace) and fine-tune existing NLP
+models for small corpora, and evaluate their effectiveness.
+
+\item ...make use of some key NLP-related Python libraries and apply them to
+larger corpora.
+
+\item ...both:
+
+    \begin{compactitem}
+        \item comprehend the statistical theory underpinning important NLP
+        algorithms, and
+        \item apply that theory and implement those algorithms concretely in a
+        programming language (Python).
+    \end{compactitem}
+
+\item ...confront and make informed decisions regarding some of the major
+ethical concerns that NLP involves, including privacy and consent; bias and
+fairness; transparency and accountability; and intellectual property and
+ownership.
+
+\end{itemize}
+
+\section*{Rules of the game}
+
+\begin{compactenum}
+
+\item There are absolutely, positively, NO stupid questions!! Your job is
+not to already know everything before you start the course. Your job is to
+try hard to learn, and part of that involves asking questions. I'm a nice
+guy, and I will not ever belittle you, snub you, or make fun of you; and if
+anyone else does so I will personally break both of their arms.
+
+\item This class will be interactive. When I point at you in class, say
+your first name, and be prepared to try and answer questions. (Don't worry
+if you don't know all the answers.) 
+
+\item The books we'll be using (my \textit{Quick Steep Climb} text, and
+Jurafsky \& Martin's \textit{Speech and Language Processing}) are mandatory,
+and you will be required to actually read the sections I assign. Luckily for
+you, J\&M is (1) an extremely well-written book, and (2) all
+\href{https://web.stanford.edu/~jurafsky/slp3/}{freely available online} thanks
+to Dan and Jim. \textit{QSC} is also
+\href{http://stephendavies.org/quick.pdf}{free and open source}.
+
+\item The reading checks, quizzes and the final exam will cover both (1)
+lecture material from class, and (2) the assigned readings. Much of what's in
+\#2 will make an appearance in \#1, but this is not guaranteed.
+
+\item Don't skip class. Just don't. It's bad form. I work hard to prepare for
+class, to make it compelling and relevant. It hurts my feelings when you don't
+come. Plus you miss out on important stuff, and you'll end up falling behind
+if you skip lecture.  So come every time. Come happy, fresh, excited, ready to
+think and to participate. 
+
+\item \textbf{Absolutely no laptops, cell phones, or other devices during
+class.} I've had students claim that they take notes on their laptop during
+lecture, but even if it's true, those things are way too big a distraction to
+you and your fellow students to make it worth it. Just stay tuned in, because I
+move fast.
+
+\item For any Zoom class that may take place this semester, \textbf{you must
+have your webcam on during the entirety of the lecture.} If you don't have a
+working Webcam, buy one immediately.
+
+\end{compactenum}
+
+\section*{Books}
+
+\begin{itemize}
+
+\item \textbf{QSC:} \textit{A Quick, Steep Climb Up Linear Algebra}, version
+1.1.0: Davies, Stephen. 2021. Available online at
+\url{http://stephendavies.org/quick.pdf}.
+
+\item \textbf{J\&M}: \textit{Speech and Language Processing}, 3rd Edition
+Draft, Jan 12 2025 release: Jurafsky, Daniel and Martin, James. 2025. Available
+online at \url{https://web.stanford.edu/~jurafsky/slp3/}.
+
+\end{itemize}
+
+I'll be surgically assigning specific sections of QSC to build the background
+you need to work with vectors, matrices, and tensors in PyTorch. If you're a
+Computer Science major and have already taken CPSC 284, this will be review for
+you. But I'm warning you: this stuff needs to be \textit{sharp} in your mind.
+Do actually plan on spending time reviewing.
+
+J\&M is still unfinished (Jim told me via email that the work on the 3rd
+Edition is proceeding ``at a glacial pace'') and tbh probably will always be.
+But it's hands-down one of the best technical books I've ever read. The authors
+are giants in the field -- legends, even -- and they know NLP as well as anyone
+on the planet ever has. Enjoy their freely available book!
+
+\section*{The Honor Code and this course}
+
+For this course:
+
+\begin{itemize}
+\itemsep.1em
+
+\item The linear algebra reading checks will take place in class, at the very
+start of the class period the first three weeks. They are closed-book,
+closed-notes, and timed (at about 10 minutes).
+
+\item The Canvas quizzes are open-book and open-notes, but they must be taken
+alone, in a quiet place, without any form of contact with anyone, and
+\textit{without any use of any website} other than the book's website and the
+class website. \textit{No} ChatGPT or other form of AI is allowed. These
+quizzes will be timed generously at anywhere from 30-60 minutes.
+
+\item \textbf{You must not use any part of any other student's Python code.}
+You may not directly copy any part of anyone else's program. That being said,
+it is okay to work alongside classmates in a study group, and you are allowed
+to talk through homework assignments, ask others how they solved a particular
+problem, and so forth. \textbf{If you do this, you must name all the people you
+worked with on your homework submission.} If you fail to give this information
+clearly on your homework submission, it is an Honor Code violation.
+
+\item You \textit{are} permitted to use AI (such as ChatGPT) while working on
+the homeworks, but \textbf{in your submission you \textit{must} include link(s)
+to all the chat(s) you created while working on it.} If you fail to give this
+information clearly in your homework submission, it is an Honor Code
+violation.
+
+\end{itemize}
+
+
+\section*{Late policy}
+
+No late work will be accepted this semester. Get your stuff in on time!
+
+\bigskip
+
+\section*{Grading}
+
+Grading this semester will be based on ``experience points" (XP). As you
+complete activities, you will earn XP towards your final total. XP can never
+be lost, only gained, but you have to earn what you get (\textit{i.e.}, you
+don't ``start off with a 100\%" and lose points based on mistakes you make).
+
+There will be opportunities to earn XP throughout the course. Some of these
+will be spontaneous as the mood strikes me. Some you can earn by completing
+in-class activities. Some may be in response to impressive things I see you
+do as the semester progresses. The following opportunities are
+\textit{guaranteed} to be available to you:
+
+\begin{center}
+\small
+\textbf{Guaranteed XP opportunities:}\\
+\begin{tabular}{|l | c | c|}
+\hline
+Activity & Possible XP \\
+\hline
+\hline
+Five linear algebra reading checks     & 5 each  \\
+\hline
+Six open-book, open-note, timed Canvas quizzes     & 25 each  \\
+\hline
+Five homework assignments     & 40 each  \\
+\hline
+2-page paper: ethical considerations of LLMs       & 50 \\
+\hline
+Final exam (comprehensive)    & 150 \\
+\hline
+Various and sundry others     & varies \\ 
+\hline
+\end{tabular}
+\end{center}
+% Total: 575
+
+\subsection*{Grading levels}
+Here are the levels you may achieve, together with the grade awarded (if any)
+and the points necessary to reach!
+
+\footnotesize
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+Level & \textbf{Total XP} & Semester grade \\
+\hline
+William Shakespeare    & \textbf{550} & A+ \\
+Homer                  & \textbf{500} & A \\
+Fyodor Dostoevsky      & \textbf{450} & A-- \\
+Charlotte Br\"{o}nte   & \textbf{400} & B+ \\
+Leo Tolstoy            & \textbf{375} & B \\
+Sophocles              & \textbf{350} & B-- \\
+Jane Austen            & \textbf{330} & C+ \\
+Toni Morrison          & \textbf{310} & C \\
+Emily Dickinson        & \textbf{290} & C-- \\
+Geoffrey Chaucer       & \textbf{270} & D+ \\
+Charles Dickens        & \textbf{250} & D \\
+George Eliot           & \textbf{230} & D-- \\
+Isaac Asimov           & \textbf{210} & \\
+C.S. Lewis             & \textbf{190} &  \\
+George Orwell          & \textbf{170} &  \\
+Virginia Woolf         & \textbf{150} &  \\
+Ursula Le Guin         & \textbf{130} &  \\
+J.R.R. Tolkien         & \textbf{110} & \\
+Mary Shelley           & \textbf{90} & \\
+Mark Twain             & \textbf{75} & \\
+Lewis Carroll          & \textbf{60} &  \\
+Agatha Christie        & \textbf{45} &  \\
+Sir Arthur Conan Doyle & \textbf{30} &  \\
+E.L. James             & \textbf{20} &  \\
+Edward Bulwer-Lytton   & \textbf{10} &  \\
+Zerna Addis Sharp      & \textbf{0} & \\
+\hline
+\end{tabular}
+\end{center}
+\normalsize
+
+\section*{Submitting homeworks}
+
+Rules for submitting homeworks (whether in Python or in English) will be
+given when the homework is assigned. For programs, you'll be emailing me your
+program code as an attachment, and using a specific subject line to
+distinguish it from my hordes of other email. Meeting the deadline is a
+matter of sending your email before time expires. For responsive readings,
+\textbf{you must submit a hardcopy of your paper -- nothing electronic will
+serve as an adequate substitute.} I'll probably collect these in class.
+
+Also, most of my homeworks are due at ``midnight." Here's what ``midnight"
+means: if a homework is due ``at midnight on Thursday," then it is due after
+all of Thursday has elapsed, and the clock strikes twelve. (In other words,
+this is good news: you have all Thursday to work on it.)
+
+\section*{Basis for determining mid-semester reports}
+
+For midterm progress reports, I look mostly at (a) whether you've been
+turning assignments in (and on time), and (b) quiz scores. If either or both
+of these categories are lacking, it's a sign of danger, and I will give you a
+``U" for your mid-semester grade. Please don't hesitate at all to come talk
+to me about this so we can figure out how you can do better in the course.
+
+
+\section*{Use of Artificial Intelligence (AI) technologies}
+
+AI is \textbf{not} permitted on any quiz or exam. Doing so will be considered a
+violation of course policy and as such, the student may be referred to the UMW
+Honor Council for a violation of academic integrity.
+
+You \textit{are} permitted to use AI (such as ChatGPT) while working on the
+homeworks, but \textbf{in your submission you \textit{must} include link(s) to
+all the chat(s) you created while working on it.} Failure to do so will be
+considered a violation of course policy and as such, the student may be
+referred to the UMW Honor Council for a violation of academic integrity.
+
+Similarly, you \textit{are} permitted to use AI (such as ChatGPT) while
+composing your responsive readings, but \textbf{in your submission you
+\textit{must} include link(s) to all the chat(s) you created while working on
+it.} Failure to do so will be considered a violation of course policy and as
+such, the student may be referred to the UMW Honor Council for a violation of
+academic integrity.
+
+\input{../standard}
+
+\section*{How to reach you}
+
+I will be communicating with you outside of class time via e-mail, so make
+sure to check your UMW e-mail every day! I will also post announcements to
+the course website, so be sure to subscribe to its RSS feed and check it in
+your feed reader at least once a day!
+
+\section*{Calendar}
+
+The official calendar for the course, complete with assignment due dates,
+tests, \textit{etc.}, will be maintained on the course website at
+\url{http://stephendavies.org/nlp}. \textbf{In any way that the website
+conflicts with the tentative calendar below, the website is to be considered
+correct, and the tentative calendar below out of date.}
+
+\addtolength{\hoffset}{-.4in}
+\begin{center}
+\begin{tabular}{|c|l|c|}
+\hline
+Week & Topics & Due \\
+% Note: week 8 is spring break
+% Also ch. 12?
+
+% HW0 - corpus
+% HW? - regexs Emily Dickinson
+% HW1 - BPE algorithm
+% HW2 - bigram LM for your corpus
+% HW3 - Torch practice, plus compute PPMI for your corpus
+% HW4 - fine-tune an LM on your corpus for text generation?
+% HW5 - fine-tune an LM on your corpus and a friend's for text classification?
+\hline
+1  & Regex's, corpora, words and tokens, tokenization & RC's \#1\&2 \\
+2  & N-gram models, BoW models, text classification   & RC's \#3\&4 \\
+3  & PyTorch tensor calculation, logistic regression  & RC \#5, HW \#0 \\
+4  & Calc primer; stochastic gradient descent         & HW \#1 \\
+5  & Vector semantics and embeddings                  & Quiz 1\\
+6  & Neural models, in theory and in PyTorch          & HW \#2 \\
+7  & Training neural models: backprop and autodiff    & Quiz 2\\
+8  & \textit{\color{gray} (fall break)} \ The attention mechanism & HW \#3 \\
+9  & The transformer architecture                     & Quiz 3 \\
+10 & Contextual and positional embeddings             & Quiz 4\\
+11 & The HuggingFace code base, hub, and community    & HW \#4 \\
+12 & Training, sampling, and evaluating LLMs          & Quiz 5 \\
+13 & Machine translation and summarization            & Quiz 6 \\
+14 & Question answering and RAG \ \textit{\color{gray} (Thanksgiving)} & HW \#5 \\
+15 & Dialogue systems and future trends in NLP        & Paper \\
+Finals &                                              & Final exam \\
+\hline
+\end{tabular}
+\end{center}
+
+\end{document}
