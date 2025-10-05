@@ -113,8 +113,8 @@ C = torch.tensor([[1., 2.],
 # Item 11: Reshape & flatten
 # Given the vector "a" below, create a 3x4 matrix called M34 with the same 12
 # elements rearranged into three rows. Then, use M34 to create a "flattened"
-# version of M34 that has all the elements in a single vector again. (The code
-# should be simple and short.)
+# version of M34 that has all the elements in a single vector again, and store
+# that in a variable called a_flat. (The code should be simple and short.)
 a = torch.arange(12.0)
 # === YOUR CODE GOES HERE ===
 
