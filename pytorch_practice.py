@@ -53,7 +53,7 @@ w = torch.tensor([4., 5., 6.])
 # ---------------------------
 # Item 5: Euclidean distance
 # Compute the Euclidean ("crow flies") distance between the points at the
-# arrow-ends of vectors v and w.
+# arrow-ends of vectors v and w and put it in a variable called dist_vw.
 # === YOUR CODE GOES HERE ===
 
 
