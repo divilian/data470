@@ -121,11 +121,12 @@ a = torch.arange(12.0)
 
 # ---------------------------
 # Item 12: Squeeze & unsqueeze
-# Examine the tensor q below, including its shape. Create a tensor "simple"
-# that has the same information but is of shape [2,3,2] (i.e., it removes the
-# unnecessary, 1-dimensional axes). Then create a tensor "complicated" that has
-# the same information but is of shape [1,2,1,1,3,2,1] (i.e., it inserts a
-# couple of additional, unnecessary, 1-dimensional axes). 
+# Examine the tensor q below, including its shape. Set its shape to a tensor
+# called q_shape. Then create a tensor "simple" that has the same information
+# but is of shape [2,3,2] (i.e., it removes the unnecessary, 1-dimensional
+# axes). Then create a tensor "complicated" that has the same information but
+# is of shape [1,2,1,1,3,2,1] (i.e., it inserts a couple of additional,
+# unnecessary, 1-dimensional axes). 
 q = torch.tensor([[[[[1.],[2.]], [[2.],[3.]], [[3.],[4.]]],[[[1.],[2.]], [[2.],[3.]], [[3.],[4.]]]]])
 # === YOUR CODE GOES HERE ===
 
