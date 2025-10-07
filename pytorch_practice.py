@@ -333,7 +333,8 @@ check_item(15, ["X_dot_Y_shape", "Y_dot_X_shape"], lambda: (
     isinstance(Y_dot_X_shape, str) and Y_dot_X_shape == "u cant do dat"
 ))
 check_item(16, ["a_plus_b", "a_times_b"], lambda: (
-    float(a_plus_b) == float(a0 + b0) and float(a_times_b) == float(a0 * b0)
+    isinstance(a_plus_b, float) and float(a_plus_b) == float(a0 + b0) and
+    isinstance(a_times_b, float) and float(a_times_b) == float(a0 * b0)
 ))
 check_item(17, ["e_to_the"], lambda: (
     torch.isclose(e_to_the,torch.tensor([0.0000,0.3679,1.0000,1.0010,2.7183,15.1543,22026.4648]), atol=1e-4).all()
