@@ -133,8 +133,8 @@ q = torch.tensor([[[[[1.],[2.]], [[2.],[3.]], [[3.],[4.]]],[[[1.],[2.]], [[2.],[
 # ---------------------------
 # Item 13: Stack & cat
 # Given vectors u1 and u2, create a 2x3 matrix called stack_uv that has u1 on
-# top of u2. Then create a 6-dimensional vector that has u1's contents followed
-# by u2's.
+# top of u2. Then create a 6-dimensional vector called cat_uv that has u1's
+# contents followed by u2's.
 u1 = torch.tensor([1., 2., 3.])
 u2 = torch.tensor([4., 5., 6.])
 # === YOUR CODE GOES HERE ===
