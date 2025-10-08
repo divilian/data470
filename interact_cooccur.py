@@ -19,7 +19,6 @@ from cooccur import *
 
 
 if __name__ == "__main__":
-    set_display()
     parser = create_cooccur_arg_parser(
         "Interact with terms in a manually computed co-occurrence matrix.")
     parser.add_argument(
