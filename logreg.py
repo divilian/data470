@@ -88,6 +88,10 @@ if __name__ == "__main__":
     # Initialize weights randomly.
     w = (torch.rand(p) - .5).requires_grad_()
 
+    # Just for gigs, print the results with initial, random, weights. 
+    print("With random weights...")
+    print(results(X_test, y_test, w))
+
     # Set GD parameters.
     eta = .0001      # Greek letter η, a.k.a. "learning rate"
     loss_delta_thresh = 0.001
@@ -130,4 +134,5 @@ if __name__ == "__main__":
         plt.show()
 
     # Show performance on the held-out test set
+    print("After training...")
     print(results(X_test, y_test, w))
