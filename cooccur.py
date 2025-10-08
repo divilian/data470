@@ -14,6 +14,7 @@ from typing import Dict, Tuple, List
 import random
 from itertools import product
 import argparse
+import sys
 
 import torch
 from tqdm import tqdm
@@ -195,7 +196,7 @@ def prompt_word(
                 return 'done'
             else:
                 print(f"No such word '{ex_choice}' in corpus!")
-                return prompt_word(vocab, num_examples_to_show)
+                return prompt_word(vocab, args.num_examples_to_show)
     return w
 
 
@@ -242,13 +243,13 @@ def create_cooccur_arg_parser(description):
         "--matrix-type",
         choices=["counts","ppmi"],
         default="counts",
-        help="Which kind of co-occurrence matrix to build"
+        help="Which kind of co-occurrence matrix to build (default counts)"
     )
     parser.add_argument(
         "--max-vocab",
         type=int,
-        default=2000,
-        help="Maximum number of vocab words to keep (based on frequency)"
+        default=1000,
+        help="Maximum vocab words to keep (based on frequency) (default 1000)"
     )
     parser.add_argument(
         "--window-size",
