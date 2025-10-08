@@ -270,12 +270,6 @@ def create_cooccur_arg_parser(description):
     return parser
 
 
-def set_display():
-    from utils import set_torch_width
-    set_torch_width()
-    torch.set_printoptions(precision=2,sci_mode=False)
-
-
 def get_matrix_and_vocabs(args, verbose=True):
     if not Path(args.inputfile).is_file():
         sys.exit(f"No such file {args.inputfile}.")
