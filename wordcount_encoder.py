@@ -31,6 +31,7 @@ def compute_vocab(
         for w,_ in counter }
     return [ w for w,_ in counter ], dfs
 
+
 def encode_text(
     text: str,           # 1
     vocab: List[str],    # |V|
@@ -54,6 +55,7 @@ def encode_all(
 ) -> torch.Tensor:       # Nx|V|
     encoded = torch.empty((len(texts),len(vocab)))
     for i,text in enumerate(texts):
+        if i % 10 == 0: print(f"{i}/{len(texts)}...")
         encoded[i,:] = encode_text(text, vocab, dfs)
     return encoded
     
