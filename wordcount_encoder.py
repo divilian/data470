@@ -53,6 +53,8 @@ def encode_text(
     """
     this_docs_words = re.findall(r"[A-Za-z']+", text.lower())
     ids = [vocab2id[w] for w in this_docs_words if w in vocab2id]
+    if not ids:
+        return torch.zeros(len(vocab2id), dtype=float)
     counts = torch.bincount(torch.tensor(ids),
         minlength=len(vocab2id)).to(float)
     return counts / dfs_vec    # Compute TF-IDF

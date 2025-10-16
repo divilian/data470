@@ -61,9 +61,9 @@ if __name__ == "__main__":
     w = (torch.rand(p, dtype=float) - .5).requires_grad_()
 
     # Set GD parameters.
-    eta = .5      # Greek letter η, a.k.a. "learning rate"
+    eta = .05     # Greek letter η, a.k.a. "learning rate"
     loss_delta_thresh = 0.0000001
-    max_iters = 2000
+    max_iters = 20000
     n_iter = 0
 
     # Prepare to plot.
