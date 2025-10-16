@@ -1,3 +1,6 @@
+import json
+import matplotlib.pyplot as plt
+
 import torch
 from datasets import load_dataset, Dataset
 
@@ -6,14 +9,6 @@ from wordcount_encoder import compute_vocab, encode_all
 torch.set_printoptions(precision=2,sci_mode=False)
 torch.set_printoptions(profile="default")
 
-def results(X, y, w):
-    """
-    For inspection, produce an Nx2 matrix whose columns are (0) the correct
-    labels y, and (1) the predicted labels produced by a log reg model that
-    uses the weight vector w.
-    """
-    yhat = sigmoid(X @ w)
-    return torch.stack([y, yhat], dim=1)
 
 def sigmoid(z):
     """
@@ -29,39 +24,46 @@ def ce_loss(X, y, w):
     yhat = sigmoid(X @ w)
     return torch.sum( -(y * torch.log(yhat) + (1-y) * torch.log(1-yhat)))
 
+
 if __name__ == "__main__":
 
     plot_loss = False
     verbose = True
-    p = 100
+    N = 1000     # Use only this # of reviews as training data (or 0 for all).
+    p = 2000     # Number of most common words to retain as TF-IDF features.
 
+    print("Loading IMDB data...")
     imdb = load_dataset("imdb")
-    small_tr = imdb['train'].shuffle(seed=123)[:1000]
-    texts_tr = small_tr['text']
-    labels_tr = small_tr['label']
-    small_ts = imdb['test'].shuffle(seed=123)[:1000]
-    texts_ts = small_ts['text']
-    labels_ts = small_ts['label']
-    vocab, dfs = compute_vocab(texts_tr, p, True)
+
+    print("Preparing data sets...")
+    small_train = imdb['train'].shuffle(seed=123)
+    if N > 0:
+        small_train = small_train[:N]
+    texts_train = small_train['text']
+    labels_train = small_train['label']
+    small_test = imdb['test'].shuffle(seed=123)
+    texts_test = small_test['text']
+    labels_test = small_test['label']
+
+    print("Computing vocab...")
+    vocab2id, dfs_vec = compute_vocab(texts_train, p)
     label_mapper = imdb['train'].features['label'].int2str
 
-    X_train = encode_all(texts_tr,vocab,dfs)
-    y_train = torch.tensor(labels_tr)
+    print("Encoding training texts...")
+    X_train = encode_all(texts_train,vocab2id,dfs_vec)
+    y_train = torch.tensor(labels_train)
 
-    X_test = encode_all(texts_ts,vocab,dfs)
-    y_test = torch.tensor(labels_ts)
+    print("Encoding test texts...")
+    X_test = encode_all(texts_test,vocab2id,dfs_vec)
+    y_test = torch.tensor(labels_test)
 
     # Initialize weights randomly.
-    w = (torch.rand(p) - .5).requires_grad_()
-
-    # Just for gigs, print the results with initial, random, weights. 
-    print("With random weights...")
-    print(results(X_test, y_test, w))
+    w = (torch.rand(p, dtype=float) - .5).requires_grad_()
 
     # Set GD parameters.
-    eta = .1      # Greek letter η, a.k.a. "learning rate"
-    loss_delta_thresh = 0.0000000001
-    max_iters = 100000
+    eta = .5      # Greek letter η, a.k.a. "learning rate"
+    loss_delta_thresh = 0.0000001
+    max_iters = 2000
     n_iter = 0
 
     # Prepare to plot.
@@ -100,6 +102,11 @@ if __name__ == "__main__":
         plt.show()
 
     # Show performance on the held-out test set
-    print("After training...")
-    print(results(X_train, y_train, w))
-    print(results(X_test, y_test, w))
+    print(f"final CE loss: {ce_loss(X_train, y_train, w)} (train)")
+    print(f"final CE loss: {ce_loss(X_test, y_test, w)} (test)")
+
+    # Save our results for interact_movies.py.
+    torch.save(w, "weights.pt")
+    torch.save(dfs_vec, "dfs_vec.pt")
+    with open("vocab2id.json","w",encoding="utf=8") as f:
+        json.dump(vocab2id, f)
