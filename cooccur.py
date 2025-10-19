@@ -196,7 +196,7 @@ def prompt_word(
                 return 'done'
             else:
                 print(f"No such word '{ex_choice}' in corpus!")
-                return prompt_word(vocab, args.num_examples_to_show)
+                return prompt_word(vocab, num_ex)
     return w
 
 
