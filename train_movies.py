@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+'''
+Manually train a movie rating classifier on the IMDB data set using log reg.
+
+DATA 470D3
+Stephen Davies, University of Mary Washington, fall 2025
+'''
 import json
 import matplotlib.pyplot as plt
 

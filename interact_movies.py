@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+'''
+Interact with a movie rating classifier (trained using train_movies.py).
+
+DATA 470D3
+Stephen Davies, University of Mary Washington, fall 2025
+'''
 import json
 
 import torch
