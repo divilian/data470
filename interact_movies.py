@@ -19,5 +19,5 @@ review = input("Enter your review: ")
 while review != "done":
     enc = encode_text(review,vocab2id,dfs_vec)
     yhat = sigmoid(enc @ w)
-    print(f"yhat = {yhat:.3f}")
+    print(f"yhat = {yhat.item():.3f}")
     review = input("Enter your review: ")
