@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     plot_loss = False
     verbose = True
-    N = 1000     # Use only this # of reviews as training data (or 0 for all).
+    N = 0     # Use only this # of reviews as training data (or 0 for all).
     p = 2000     # Number of most common words to retain as TF-IDF features.
 
     print("Loading IMDB data...")
@@ -41,9 +41,6 @@ if __name__ == "__main__":
         small_train = small_train[:N]
     texts_train = small_train['text']
     labels_train = small_train['label']
-    small_test = imdb['test'].shuffle(seed=123)
-    texts_test = small_test['text']
-    labels_test = small_test['label']
 
     print("Computing vocab...")
     vocab2id, dfs_vec = compute_vocab(texts_train, p)
@@ -52,10 +49,6 @@ if __name__ == "__main__":
     print("Encoding training texts...")
     X_train = encode_all(texts_train,vocab2id,dfs_vec)
     y_train = torch.tensor(labels_train)
-
-    print("Encoding test texts...")
-    X_test = encode_all(texts_test,vocab2id,dfs_vec)
-    y_test = torch.tensor(labels_test)
 
     # Initialize weights randomly.
     w = (torch.rand(p, dtype=float) - .5).requires_grad_()
@@ -105,7 +98,7 @@ if __name__ == "__main__":
     print(f"final CE loss: {ce_loss(X_train, y_train, w)} (train)")
     print(f"final CE loss: {ce_loss(X_test, y_test, w)} (test)")
 
-    # Save our results for interact_movies.py.
+    # Save our results for eval_movies.py, interact_movies.py.
     torch.save(w, "weights.pt")
     torch.save(dfs_vec, "dfs_vec.pt")
     with open("vocab2id.json","w",encoding="utf=8") as f:
