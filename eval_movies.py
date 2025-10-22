@@ -13,24 +13,11 @@ import torch
 from datasets import load_dataset, Dataset
 
 from wordcount_encoder import compute_vocab, encode_all
+from train_movies import predict
 
 torch.set_printoptions(precision=2,sci_mode=False)
 torch.set_printoptions(profile="default")
 
-
-def sigmoid(z):
-    """
-    Convert a logit (from -∞ to ∞) to a probability (from 0 to 1).
-    """
-    return 1 / (1 + torch.exp(-z))
-
-def predict(X, w):
-    """
-    Compute the mean cross-entropy loss produced by a logistic model using the
-    weights w, on a data set with features X and labels y.
-    """
-    yhat = sigmoid(X @ w)
-    return yhat
 
 
 if __name__ == "__main__":

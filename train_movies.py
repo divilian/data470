@@ -28,8 +28,16 @@ def ce_loss(X, y, w):
     Compute the mean cross-entropy loss produced by a logistic model using the
     weights w, on a data set with features X and labels y.
     """
-    yhat = sigmoid(X @ w)
+    yhat = predict(X, w)
     return torch.sum( -(y * torch.log(yhat) + (1-y) * torch.log(1-yhat)))
+
+def predict(X, w):
+    """
+    Compute the mean cross-entropy loss produced by a logistic model using the
+    weights w, on a data set with features X and labels y.
+    """
+    yhat = sigmoid(X @ w)
+    return yhat
 
 
 if __name__ == "__main__":
