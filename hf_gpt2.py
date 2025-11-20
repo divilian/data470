@@ -22,7 +22,7 @@ while txt != "done":
     input_ids = (tokenizer(txt, return_tensors='pt')['input_ids'].squeeze(0))
 
     with torch.no_grad():
-        for i in range(80):
+        for i in range(num_words):
             output = model(input_ids=input_ids.unsqueeze(0))
             next_token_logits = output.logits[0,-1,:]
 
